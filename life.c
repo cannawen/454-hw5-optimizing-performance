@@ -69,9 +69,7 @@ game_of_life (char* outboard,
 	      const int nrows,
 	      const int ncols,
 	      const int gens_max)
-{
-	pthread_barrier_t barr;
-	
+{	
 	if(nrows < 32)
 		return sequential_game_of_life (outboard, inboard, nrows, ncols, gens_max);
 	else if (nrows > 10000)

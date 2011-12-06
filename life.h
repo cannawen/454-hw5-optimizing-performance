@@ -41,7 +41,6 @@ typedef struct thread_data{
    int ncols;
    int gens_max;
    int thread_id;
-   pthread_barrier_t * barr;
 } thd;
 
 /**
