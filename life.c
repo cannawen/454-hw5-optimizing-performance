@@ -21,8 +21,7 @@ parallel_game_of_life (void * arg)
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
 
-    for (curgen = 0; curgen < args->gens_max; curgen++)
-    {
+
         for (j = 0 ; j < args->nrows; j++)
         {
             for (i = colstart; i < colend; i++)
@@ -44,12 +43,8 @@ parallel_game_of_life (void * arg)
 
                 BOARD(args->outboard, i, j) = alivep (neighbor_count, BOARD (args->inboard, i, j));
             }
-        }
         SWAP_BOARDS( args->outboard, args->inboard );
-
-        pthread_barrier_wait(&barr);
-
-    }
+	    }
     /*
      * We return the output board, so that we know which one contains
      * the final result (because we've been swapping boards around).
@@ -89,13 +84,14 @@ game_of_life (char* outboard,
 		td[i].nrows=nrows;
 		td[i].thread_id= i;
 	}
-	pthread_barrier_init(&barr, NULL, NUM_THREADS);
-
+	  
+	  for (curgen = 0; curgen < args->gens_max; curgen++)
+    {
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_create(&(id[i]),0,parallel_game_of_life,(void*) &td[i]);
 
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_join(id[i],0);
-
+	}
 	return td[0].inboard;
 }
