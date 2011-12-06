@@ -84,8 +84,8 @@ game_of_life (char* outboard,
 		td[i].nrows=nrows;
 		td[i].thread_id= i;
 	}
-	  
-	  for (curgen = 0; curgen < args->gens_max; curgen++)
+	  int curgen;
+	  for (curgen = 0; curgen < gens_max; curgen++)
     {
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_create(&(id[i]),0,parallel_game_of_life,(void*) &td[i]);
