@@ -19,8 +19,8 @@ endif
 
 GOL_EXE = gol
 GOL_VERIFY_EXE = gol_verify
-GOL_OBJS = gol.o life.o lifeseq.o load.o save.o 
-GOL_VERIFY_OBJS = gol.verify.o life.o lifeseq.o load.o save.o 
+GOL_OBJS = gol.o life.o lifeseq.o load.o save.o lock.o
+GOL_VERIFY_OBJS = gol.verify.o life.o lifeseq.o load.o save.o lock.o
 BITBOARD_EXE = initboard
 BITBOARD_OBJS = bitboard.o random_bit.o
 EXES = $(GOL_EXE) $(BITBOARD_EXE)
@@ -46,7 +46,7 @@ $(BITBOARD_EXE): $(BITBOARD_OBJS)
 
 lifeseq.o: lifeseq.c life.h util.h
 
-life.o: life.c life.h util.h
+life.o: life.c life.h util.h lock.h
 
 load.o: load.c load.h
 
@@ -58,6 +58,7 @@ bitboard.o: bitboard.c random_bit.h
 
 random_bit.o: random_bit.c random_bit.h
 
+lock.o: lock.c lock.h
 
 clean:
 	rm -f $(GOL_OBJS) $(GOL_VERIFY_OBJS) $(GOL_EXE) $(GOL_VERIFY_EXE) $(BITBOARD_OBJS) $(BITBOARD_EXE) 

@@ -1,5 +1,6 @@
 #ifndef _life_h
 #define _life_h
+#include "lock.h"
 #include <pthread.h>
 
 #define NUM_THREADS 4
@@ -33,6 +34,7 @@ sequential_game_of_life (char* outboard,
 parallel_game_of_life (void * arg);
 
 typedef struct thread_data{
+	barrier_t *barr;
   char* outboard;
   char* inboard;
    int nrows;
@@ -40,8 +42,6 @@ typedef struct thread_data{
    int gens_max;
    int thread_id;
 } thd;
-
-pthread_barrier_t barr;
 
 
 /**

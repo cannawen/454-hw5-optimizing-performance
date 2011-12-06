@@ -4,6 +4,7 @@
  ****************************************************************************/
 #include "life.h"
 #include "util.h"
+#include "lock.h"
 #include <pthread.h>
 
 /*****************************************************************************
@@ -22,6 +23,8 @@ parallel_game_of_life (void * arg)
     int colend = chunk * (args->thread_id + 1);
 
 
+	for (curgen = 0; curgen < args->gens_max; curgen++)
+	{
         for (j = 0 ; j < args->nrows; j++)
         {
             for (i = colstart; i < colend; i++)
@@ -43,9 +46,12 @@ parallel_game_of_life (void * arg)
 
                 BOARD(args->outboard, i, j) = alivep (neighbor_count, BOARD (args->inboard, i, j));
             }
-        SWAP_BOARDS( args->outboard, args->inboard );
 	    }
-    /*
+        SWAP_BOARDS( args->outboard, args->inboard );
+		barrier_wait(args->barr);
+    }
+
+	/*
      * We return the output board, so that we know which one contains
      * the final result (because we've been swapping boards around).
      * Just be careful when you free() the two boards, so that you don't
@@ -72,9 +78,12 @@ game_of_life (char* outboard,
 	else if (nrows > 10000)
 		return (char*)0;
 
+	barrier_t barr;
 	thd td[NUM_THREADS];
 	pthread_t id[NUM_THREADS];
 	int i;
+	
+	barrier_init(&barr, NUM_THREADS);	
 	for(i=0;i<NUM_THREADS;i++)
 	{
 		td[i].gens_max=gens_max;
@@ -83,15 +92,13 @@ game_of_life (char* outboard,
 		td[i].ncols=ncols;
 		td[i].nrows=nrows;
 		td[i].thread_id= i;
+		td[i].barr = &barr;
 	}
-	  
-	  for (curgen = 0; curgen < args->gens_max; curgen++)
-    {
+
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_create(&(id[i]),0,parallel_game_of_life,(void*) &td[i]);
 
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_join(id[i],0);
-	}
 	return td[0].inboard;
 }
