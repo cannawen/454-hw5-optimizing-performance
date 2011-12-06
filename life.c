@@ -16,7 +16,7 @@ parallel_game_of_life (void * arg)
     thd *args = (thd *) arg;
 
     const int LDA = args->nrows;
-    int curgen, i, j;
+    int curgen, i, j,i1,j1;
     int chunk = args->ncols / NUM_THREADS;
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
