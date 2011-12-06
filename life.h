@@ -42,4 +42,17 @@ typedef struct thread_data{
 
 pthread_barrier_t barr;
 
+
+/**
+ * Swapping the two boards only involves swapping pointers, not
+ * copying values.
+ */
+#define SWAP_BOARDS( b1, b2 )  do { \
+  char* temp = b1; \
+  b1 = b2; \
+  b2 = temp; \
+} while(0)
+
+#define BOARD( __board, __i, __j )  (__board[(__i) + LDA*(__j)])
+
 #endif /* _life_h */
