@@ -34,7 +34,7 @@ sequential_game_of_life (char* outboard,
 parallel_game_of_life (void * arg);
 
 typedef struct thread_data{
-	barrier_t *barr;
+	pthread_barrier_t *barr;
   char* outboard;
   char* inboard;
    int nrows;

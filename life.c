@@ -50,7 +50,7 @@ parallel_game_of_life (void * arg)
             }
 	    }
         SWAP_BOARDS( args->outboard, args->inboard );
-		barrier_wait(args->barr);
+        pthread_barrier_wait(args->barr);
     }
 
      /* We return the output board, so that we know which one contains
@@ -78,12 +78,13 @@ game_of_life (char* outboard,
 	else if (nrows > 10000)
 		return (char*)0;
 
-	barrier_t barr;
+	pthread_barrier_t barr;
 	thd td[NUM_THREADS];
 	pthread_t id[NUM_THREADS];
 	int i;
 	
-	barrier_init(&barr, NUM_THREADS);	
+	pthread_barrier_init(&barr, NULL, NUM_THREADS);
+	
 	for(i=0;i<NUM_THREADS;i++)
 	{
 		td[i].gens_max=gens_max;
