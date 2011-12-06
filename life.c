@@ -21,12 +21,17 @@ parallel_game_of_life (void * arg)
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
 
+	int T = 16;
     for (curgen = 0; curgen < args->gens_max; curgen++)
     {
-        for (j = 0 ; j < args->nrows; j++)
+        for (j1 = 0 ; j1 < args->nrows; j1+=T)
         {
-            for (i = colstart; i < colend; i++)
+            for (i1 = colstart; i1 < colend; i1+=T)
             {
+                    for (j = j1 ; j < j1+T; j++)
+        			{
+           			 for (i = i1; i < i1+T; i++)
+            			{
                 const int inorth = mod (i-1, args->nrows);
                 const int isouth = mod (i+1, args->nrows);
                 const int jwest = mod (j-1, args->ncols);
@@ -43,7 +48,8 @@ parallel_game_of_life (void * arg)
                     BOARD (args->inboard, isouth, jeast);
 
                 BOARD(args->outboard, i, j) = alivep (neighbor_count, BOARD (args->inboard, i, j));
-
+					}
+				}
             }
         }
         SWAP_BOARDS( args->outboard, args->inboard );
