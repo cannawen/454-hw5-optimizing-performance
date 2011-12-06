@@ -37,16 +37,16 @@ parallel_game_of_life (void * arg)
 
 
                 const char neighbor_count =
-                    BOARD (args->inboard, inorth, jwest) +
-                    BOARD (args->inboard, inorth, jrow) +
-                    BOARD (args->inboard, inorth, jeast) +
-                    BOARD (args->inboard, i, jwest) +
-                    BOARD (args->inboard, i, jeast) +
-                    BOARD (args->inboard, isouth, jwest) +
-                    BOARD (args->inboard, isouth, jrow) +
-                    BOARD (args->inboard, isouth, jeast);
+                    SMRT_BOARD (args->inboard, inorth, jwest) +
+                    SMRT_BOARD (args->inboard, inorth, jrow) +
+                    SMRT_BOARD (args->inboard, inorth, jeast) +
+                    SMRT_BOARD (args->inboard, i, jwest) +
+                    SMRT_BOARD (args->inboard, i, jeast) +
+                    SMRT_BOARD (args->inboard, isouth, jwest) +
+                    SMRT_BOARD (args->inboard, isouth, jrow) +
+                    SMRT_BOARD (args->inboard, isouth, jeast);
 
-                BOARD(args->outboard, i, jrow) = alivep (neighbor_count, BOARD (args->inboard, i, jrow));
+                SMRT_BOARD(args->outboard, i, jrow) = alivep (neighbor_count, SMRT_BOARD (args->inboard, i, jrow));
             }
 	    }
         SWAP_BOARDS( args->outboard, args->inboard );
