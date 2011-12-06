@@ -58,7 +58,7 @@ parallel_game_of_life (void * arg)
                     BOARD (args->inboard, isouth, jrow) +
                     BOARD (args->inboard, isouth, jeast);
 
-                BOARD(args->outboard, i, j) = alivep (neighbor_count, BOARD (args->inboard, i, j));
+                BOARD(args->outboard, i, jrow) = alivep (neighbor_count, BOARD (args->inboard, i, jrow));
             }
 	    }
         SWAP_BOARDS( args->outboard, args->inboard );
