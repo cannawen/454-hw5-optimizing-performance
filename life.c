@@ -22,7 +22,6 @@ parallel_game_of_life (void * arg)
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
 
-
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
         for (j = 0 ; j < args->nrows; j++)
@@ -51,8 +50,7 @@ parallel_game_of_life (void * arg)
 		barrier_wait(args->barr);
     }
 
-	/*
-     * We return the output board, so that we know which one contains
+     /* We return the output board, so that we know which one contains
      * the final result (because we've been swapping boards around).
      * Just be careful when you free() the two boards, so that you don't
      * free the same one twice!!!
@@ -72,6 +70,7 @@ game_of_life (char* outboard,
 	      const int ncols,
 	      const int gens_max)
 {
+	pthread_barrier_t barr;
 	
 	if(nrows < 32)
 		return sequential_game_of_life (outboard, inboard, nrows, ncols, gens_max);
@@ -94,11 +93,12 @@ game_of_life (char* outboard,
 		td[i].thread_id= i;
 		td[i].barr = &barr;
 	}
-
+	
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_create(&(id[i]),0,parallel_game_of_life,(void*) &td[i]);
 
 	for(i=0;i<NUM_THREADS;i++)
 		pthread_join(id[i],0);
+	
 	return td[0].inboard;
 }
