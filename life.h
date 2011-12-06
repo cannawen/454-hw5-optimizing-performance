@@ -1,5 +1,6 @@
 #ifndef _life_h
 #define _life_h
+#include <pthread.h>
 
 #define NUM_THREADS 4
 
