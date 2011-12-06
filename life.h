@@ -53,6 +53,7 @@ typedef struct thread_data{
   b2 = temp; \
 } while(0)
 
-#define BOARD( __board, __i, __j )  (__board[(__i) + LDA*(__j)])
+//#define BOARD( __board, __i, __j )  (__board[(__i) + LDA*(__j)])
+#define BOARD(b,i,j) (b[i+j])
 
 #endif /* _life_h */
