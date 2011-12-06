@@ -21,7 +21,7 @@ parallel_game_of_life (void * arg)
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
 
-	int T = 16;
+	int T = 8;
     for (curgen = 0; curgen < args->gens_max; curgen++)
     {
         for (j1 = 0 ; j1 < args->nrows; j1+=T)
