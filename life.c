@@ -28,10 +28,16 @@ parallel_game_of_life (void * arg)
         {
             for (i = colstart; i < colend; i++)
             {
-                const int inorth = mod (i-1, args->nrows);
+/*                const int inorth = mod (i-1, args->nrows);
                 const int isouth = mod (i+1, args->nrows);
                 const int jwest = mod (j-1, args->ncols);
-                const int jeast = mod (j+1, args->ncols);
+                const int jeast = mod (j+1, args->ncols);*/
+
+                const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
+                const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
+                const int jwest = (j==0) ? (args->ncols - 1) : (j-1);
+                const int jeast = (j== args->ncols - 1) ? 0 : (i+1);
+
 
                 const char neighbor_count =
                     BOARD (args->inboard, inorth, jwest) +
