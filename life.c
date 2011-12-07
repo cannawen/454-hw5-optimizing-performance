@@ -21,34 +21,205 @@ parallel_game_of_life (void * arg)
     int chunk = args->ncols / NUM_THREADS;
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
+    int end = args->cols-1;
+    	 int in ;
+	 int is ;
+	 int jw;
+	 int je ;
+    
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
+	//we are at the top
+	if(colstart==0)
+	{
+	//top left corner
+	
+	  in = end;
+	  is = 1;
+	  jw = end;
+	  je = LDA;
+	 
+	 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is] +
+                    args->inboard[is+je];
+
+                args->outboard[0] = alivep (neighbor_count, args->inboard[0]);
+	
+	//top loop
+	
+	for(i=1;i<end;i++)
+	{
+		in = i-1
+		is=i+1
+		jw=end
+		je=LDA
+		
+		
+				 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is] +
+                    args->inboard[is+je];
+
+                args->outboard[i] = alivep (neighbor_count, args->inboard[i]);
+	}
+	
+	
+	//top right corner
+	
+	  in = end-1;
+	  is = 0;
+	  jw = end;
+	  je = LDA;
+		 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in+jrow] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is+jrow] +
+                    args->inboard[is+je];
+
+                args->outboard[end] = alivep (neighbor_count, args->inboard[end]);
+                
+	colstart++;
+	}
+	//we are on the bottom
+	if(colend==args->cols-1)
+	{
+	int jr=end*LDA;
+	//bottom left corner
+		  in = end;//
+	  is = 1;
+	  jw = jr-LDA;
+	  je = 0;//
+	 
+	 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in+jr] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is+jr] +
+                    args->inboard[is+je];
+
+                args->outboard[jr] = alivep (neighbor_count, args->inboard[jr]);
+	//loop
+		for(i=1;i<end;i++)
+	{
+		in = i-1
+		is=i+1
+		jw=jr-LDA
+		je=0
+		
+		
+				 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in+jrow] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is+jrow] +
+                    args->inboard[is+je];
+
+                args->outboard[jr+i] = alivep (neighbor_count, args->inboard[jr+i]);
+	}
+	
+	//bottom right corner
+		  in = end-1;
+	  is = 0;
+	  jw = end-1;
+	  je = 0;
+	  
+		 const char neighbor_count =
+                    args->inboard[in+jw] +
+                    args->inboard[in+jrow] +
+                    args->inboard[in+je] +
+                    args->inboard[i+jw] +
+                    args->inboard[i+je] +
+                    args->inboard[is+jw] +
+                    args->inboard[is+jrow] +
+                    args->inboard[is+je];
+
+                args->outboard[jr+end] = alivep (neighbor_count, args->inboard[jr+end]);
+	
+	colend--;
+	}
         for (j = colstart ; j < colend; j++)
         {
-            for (i = 0; i < args->nrows ; i++)
+			int jrow = LDA * j;
+			
+			//i==0, we are on the leftest side
+			const int in1 = args->rows-1;
+			const int is1 = 1;
+			const int jw1 = jrow-LDA;
+			const int je1 = jrow+LDA;
+			
+			const char neighbor_count =
+                    args->inboard[in1+jw1] +
+                    args->inboard[in1+jrow] +
+                    args->inboard[in1+je1] +
+                    args->inboard[i+jw1] +
+                    args->inboard[i+je1] +
+                    args->inboard[is1+jw1] +
+                    args->inboard[is1+jrow] +
+                    args->inboard[is1+je1];
+
+                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
+			
+            for (i = 1; i < args->nrows - 1; i++)
             {
-				int jrow = LDA * j;
-				
-                const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
-                const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
+            
+                const int inorth = /*(i == 0) ? (args->nrows - 1) :*/ (i-1) ;
+                const int isouth = /*(i == args->nrows - 1) ? 0 :*/ (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
 
-
                 const char neighbor_count =
-                    SMRT_BOARD (args->inboard, inorth, jwest) +
-                    SMRT_BOARD (args->inboard, inorth, jrow) +
-                    SMRT_BOARD (args->inboard, inorth, jeast) +
-                    SMRT_BOARD (args->inboard, i, jwest) +
-                    SMRT_BOARD (args->inboard, i, jeast) +
-                    SMRT_BOARD (args->inboard, isouth, jwest) +
-                    SMRT_BOARD (args->inboard, isouth, jrow) +
-                    SMRT_BOARD (args->inboard, isouth, jeast);
+                    args->inboard[inorth+jwest] +
+                    args->inboard[inorth+jrow] +
+                    args->inboard[inorth+jeast] +
+                    args->inboard[i+jwest] +
+                    args->inboard[i+jeast] +
+                    args->inboard[isouth+jwest] +
+                    args->inboard[isouth+jrow] +
+                    args->inboard[isouth+jeast];
 
-                SMRT_BOARD(args->outboard, i, jrow) = alivep (neighbor_count, SMRT_BOARD (args->inboard, i, jrow));
+                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
             }
-	    }
+            
+            //i==args->nrows - 1, we are on the rightest side
+            const int in2 = args->rows-2;
+            const int is2 = 0;
+			const int jw2 = jrow-LDA;
+			const int je2 = jrow+LDA;
+			
+			const char neighbor_count =
+                    args->inboard[in2+jw2] +
+                    args->inboard[in2+jrow] +
+                    args->inboard[in2+je2] +
+                    args->inboard[i+jw2] +
+                    args->inboard[i+je2] +
+                    args->inboard[is2+jw2] +
+                    args->inboard[is2+jrow] +
+                    args->inboard[is2+je2];
+
+                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
+		}
         SWAP_BOARDS( args->outboard, args->inboard );
         barrier_wait(args->barr);
     }
