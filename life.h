@@ -3,7 +3,7 @@
 #include "lock.h"
 #include <pthread.h>
 
-#define NUM_THREADS 4
+#define NUM_THREADS 1
 
 /**
  * Given the initial board state in inboard and the board dimensions
