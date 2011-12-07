@@ -39,17 +39,17 @@ parallel_game_of_life (void * arg)
             for (i = 1; i < args->nrows - 1; i++)
             {
             	/*
-            	const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
-                const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
-                const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
-                const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
-            	*/
-            	int jrow = j*LDA;
-            	
                 const int inorth = (i-1) ;
                 const int isouth = (i+1);
                 const int jwest =  jrow - LDA;
                 const int jeast = jrow + LDA;
+            	*/
+            	int jrow = j*LDA;
+            	
+                const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
+                const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
+                const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
+                const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
 
                 const char neighbor_count =
                     args->inboard[inorth+jwest] +
