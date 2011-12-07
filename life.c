@@ -33,7 +33,11 @@ parallel_game_of_life (void * arg)
 	{
 		if(colstart==0)
 		{
-		         /*const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
+		j=0;
+		jrow = 0;
+		for (i = 0; i < args->nrows; i++)
+		{
+		         const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
@@ -45,16 +49,36 @@ parallel_game_of_life (void * arg)
                     args->inboard[i+jwest] +
                     args->inboard[i+jeast] +
                     args->inboard[isouth+jwest] +
-                    args->inboard[isouth+jrow] +
+                    args->inboard[isouth] +
                     args->inboard[isouth+jeast];
 
-                args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+jrow]);*/
-                
+                args->outboard[i] = alivep (neighbor_count, args->inboard[i]);
+           }
                 colstart++;
 		}
 		if(colend==LDA)
 		{
-		
+				j=args->ncols - 1;
+				jrow = LDA*end;
+		for (i = 0; i < args->nrows; i++)
+		{
+		         const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
+                const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
+                const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
+                const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
+                
+                    const char neighbor_count =
+                    args->inboard[inorth+jwest] +
+                    args->inboard[inorth+jrow] +
+                    args->inboard[inorth+jeast] +
+                    args->inboard[i+jwest] +
+                    args->inboard[i+jeast] +
+                    args->inboard[isouth+jwest] +
+                    args->inboard[isouth] +
+                    args->inboard[isouth+jeast];
+
+                args->outboard[i] = alivep (neighbor_count, args->inboard[i]);
+           }
 			colend--;
 		}
         for (j = colstart ; j < colend; j++)
