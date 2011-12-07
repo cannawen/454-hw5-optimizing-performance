@@ -27,6 +27,7 @@ parallel_game_of_life (void * arg)
 	 int jw;
 	 int je ;
 	 char nc;
+	 int jrow;
     
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
@@ -83,7 +84,7 @@ parallel_game_of_life (void * arg)
 		}
         for (j = colstart ; j < colend; j++)
         {
-			int jrow = LDA * j;
+			 jrow = LDA * j;
 			
 			//i==0, we are on the leftest side
 			const int in1 = end;
