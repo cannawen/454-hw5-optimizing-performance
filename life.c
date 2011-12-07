@@ -21,11 +21,12 @@ parallel_game_of_life (void * arg)
     int chunk = args->ncols / NUM_THREADS;
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
-    int end = args->cols-1;
+    int end = LDA-1;
     	 int in ;
 	 int is ;
 	 int jw;
 	 int je ;
+	 char nc;
     
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
@@ -40,7 +41,7 @@ parallel_game_of_life (void * arg)
 	  jw = end;
 	  je = LDA;
 	 
-	 const char neighbor_count =
+	 nc =
                     args->inboard[in+jw] +
                     args->inboard[in] +
                     args->inboard[in+je] +
@@ -50,19 +51,19 @@ parallel_game_of_life (void * arg)
                     args->inboard[is] +
                     args->inboard[is+je];
 
-                args->outboard[0] = alivep (neighbor_count, args->inboard[0]);
+                args->outboard[0] = alivep (nc, args->inboard[0]);
 	
 	//top loop
 	
 	for(i=1;i<end;i++)
 	{
-		in = i-1
-		is=i+1
-		jw=end
-		je=LDA
+		in = i-1;
+		is=i+1;
+		jw=end;
+		je=LDA;
 		
 		
-				 const char neighbor_count =
+				 nc =
                     args->inboard[in+jw] +
                     args->inboard[in] +
                     args->inboard[in+je] +
@@ -72,7 +73,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[is] +
                     args->inboard[is+je];
 
-                args->outboard[i] = alivep (neighbor_count, args->inboard[i]);
+                args->outboard[i] = alivep (nc, args->inboard[i]);
 	}
 	
 	
@@ -82,22 +83,22 @@ parallel_game_of_life (void * arg)
 	  is = 0;
 	  jw = end;
 	  je = LDA;
-		 const char neighbor_count =
+		nc =
                     args->inboard[in+jw] +
-                    args->inboard[in+jrow] +
+                    args->inboard[in] +
                     args->inboard[in+je] +
                     args->inboard[i+jw] +
                     args->inboard[i+je] +
                     args->inboard[is+jw] +
-                    args->inboard[is+jrow] +
+                    args->inboard[is] +
                     args->inboard[is+je];
 
-                args->outboard[end] = alivep (neighbor_count, args->inboard[end]);
+                args->outboard[end] = alivep (nc, args->inboard[end]);
                 
 	colstart++;
 	}
 	//we are on the bottom
-	if(colend==args->cols-1)
+	if(colend==end)
 	{
 	int jr=end*LDA;
 	//bottom left corner
@@ -106,7 +107,7 @@ parallel_game_of_life (void * arg)
 	  jw = jr-LDA;
 	  je = 0;//
 	 
-	 const char neighbor_count =
+	 nc =
                     args->inboard[in+jw] +
                     args->inboard[in+jr] +
                     args->inboard[in+je] +
@@ -116,17 +117,17 @@ parallel_game_of_life (void * arg)
                     args->inboard[is+jr] +
                     args->inboard[is+je];
 
-                args->outboard[jr] = alivep (neighbor_count, args->inboard[jr]);
+                args->outboard[jr] = alivep (nc, args->inboard[jr]);
 	//loop
 		for(i=1;i<end;i++)
 	{
-		in = i-1
-		is=i+1
-		jw=jr-LDA
-		je=0
+		in = i-1;
+		is=i+1;
+		jw=jr-LDA;
+		je=0;
 		
 		
-				 const char neighbor_count =
+				 nc =
                     args->inboard[in+jw] +
                     args->inboard[in+jrow] +
                     args->inboard[in+je] +
@@ -136,7 +137,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[is+jrow] +
                     args->inboard[is+je];
 
-                args->outboard[jr+i] = alivep (neighbor_count, args->inboard[jr+i]);
+                args->outboard[jr+i] = alivep (nc, args->inboard[jr+i]);
 	}
 	
 	//bottom right corner
@@ -145,7 +146,7 @@ parallel_game_of_life (void * arg)
 	  jw = end-1;
 	  je = 0;
 	  
-		 const char neighbor_count =
+		 nc=
                     args->inboard[in+jw] +
                     args->inboard[in+jrow] +
                     args->inboard[in+je] +
@@ -155,7 +156,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[is+jrow] +
                     args->inboard[is+je];
 
-                args->outboard[jr+end] = alivep (neighbor_count, args->inboard[jr+end]);
+                args->outboard[jr+end] = alivep (nc, args->inboard[jr+end]);
 	
 	colend--;
 	}
@@ -164,12 +165,12 @@ parallel_game_of_life (void * arg)
 			int jrow = LDA * j;
 			
 			//i==0, we are on the leftest side
-			const int in1 = args->rows-1;
+			const int in1 = end;
 			const int is1 = 1;
 			const int jw1 = jrow-LDA;
 			const int je1 = jrow+LDA;
 			
-			const char neighbor_count =
+			nc =
                     args->inboard[in1+jw1] +
                     args->inboard[in1+jrow] +
                     args->inboard[in1+je1] +
@@ -179,7 +180,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[is1+jrow] +
                     args->inboard[is1+je1];
 
-                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
+                args->outboard[i+jrow] = alivep (nc, args->inboard[i+jrow]);
 			
             for (i = 1; i < args->nrows - 1; i++)
             {
@@ -199,7 +200,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[isouth+jrow] +
                     args->inboard[isouth+jeast];
 
-                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
+                args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+jrow]);
             }
             
             //i==args->nrows - 1, we are on the rightest side
@@ -208,7 +209,7 @@ parallel_game_of_life (void * arg)
 			const int jw2 = jrow-LDA;
 			const int je2 = jrow+LDA;
 			
-			const char neighbor_count =
+			const char nc =
                     args->inboard[in2+jw2] +
                     args->inboard[in2+jrow] +
                     args->inboard[in2+je2] +
@@ -218,7 +219,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[is2+jrow] +
                     args->inboard[is2+je2];
 
-                args->outboard[i+jrow = alivep (neighbor_count, args->inboard[i+jrow]);
+                args->outboard[i+jrow] = alivep (nc, args->inboard[i+jrow]);
 		}
         SWAP_BOARDS( args->outboard, args->inboard );
         barrier_wait(args->barr);
