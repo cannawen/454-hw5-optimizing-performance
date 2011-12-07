@@ -21,14 +21,6 @@ parallel_game_of_life (void * arg)
     int chunk = args->ncols / NUM_THREADS;
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
-    int end = LDA-1;
-    	 int in ;
-	 int is ;
-	 int jw;
-	 int je ;
-	 char nc;
-	 int jrow;
-    
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
@@ -44,7 +36,6 @@ parallel_game_of_life (void * arg)
 		
         for (j = colstart ; j < colend; j++)
         {
-			jrow = j*LDA;
             for (i = 1; i < args->nrows - 1; i++)
             {
             	/*
@@ -53,6 +44,8 @@ parallel_game_of_life (void * arg)
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
             	*/
+            	int jrow = j*LDA;
+            	
                 const int inorth = (i-1) ;
                 const int isouth = (i+1);
                 const int jwest =  jrow - LDA;
