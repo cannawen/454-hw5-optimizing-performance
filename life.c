@@ -44,7 +44,7 @@ parallel_game_of_life (void * arg)
 		
         for (j = colstart ; j < colend; j++)
         {
-			jrow = j*LDR;
+			jrow = j*LDA;
             for (i = 1; i < args->nrows - 1; i++)
             {
             	/*
