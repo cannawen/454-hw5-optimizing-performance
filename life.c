@@ -24,9 +24,9 @@ parallel_game_of_life (void * arg)
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
-        for (j = 0 ; j < args->nrows; j++)
+        for (i = 0 ; i < args->nrows; i++)
         {
-            for (i = colstart; i < colend; i++)
+            for (j = colstart; j < colend; j++)
             {
 				int jrow = LDA * j;
 				
