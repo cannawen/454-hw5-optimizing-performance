@@ -18,14 +18,15 @@ parallel_game_of_life (void * arg)
 
     const int LDA = args->nrows;
     int curgen, i, j;
+    int chunk = args->ncols / NUM_THREADS;
+    int colstart = chunk * args->thread_id;
+    int colend = chunk * (args->thread_id + 1);
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
         for (j = 0 ; j < args->nrows; j++)
         {
-            for (i = (args->ncols / NUM_THREADS) * args->thread_id;
-            	i < (args->ncols / NUM_THREADS) * (args->thread_id + 1);
-            	i++)
+            for (i = colstart; i < colend; i++)
             {
 				int jrow = LDA * j;
 				
