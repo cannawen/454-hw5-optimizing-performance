@@ -26,15 +26,13 @@ parallel_game_of_life (void * arg)
 	{
         for (j = 0 ; j < args->nrows; j++)
         {
+			int jrow = LDA * j;
             for (i = colstart; i < colend; i++)
-            {
-				int jrow = LDA * j;
-				
+            {				
                 const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
-
 
                 const char neighbor_count =
                     SMRT_BOARD (args->inboard, inorth, jwest) +
