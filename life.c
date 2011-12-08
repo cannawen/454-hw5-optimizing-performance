@@ -96,9 +96,9 @@ parallel_game_of_life (void * arg)
         	}
 	    }
 		{
+			j=colend-1;
 			for(i = 0; i < args->nrows ; i++)
 			{
-				j=colend-1;
 				int jrow = LDA * j;
 				const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
