@@ -49,23 +49,24 @@ parallel_game_of_life (void * arg)
 		}
         for (j=colstart+1; j < (colend-1); j++)
         {
-			int jrow = LDA * j;
+			int jr = LDA * j;
         	i=0;
         	{
                 const char neighbor_count =
-                    args->inboard[(LDA - 1)+ (jrow - LDA)] +
-                    args->inboard[(LDA - 1)+jrow] +
-                    args->inboard[(LDA - 1)+ (jrow + LDA)] +
-                    args->inboard[i+ (jrow - LDA)] +
-                    args->inboard[i+(jrow + LDA)] +
-                    args->inboard[(i+1)+ (jrow - LDA)] +
-                    args->inboard[(i+1)+jrow] +
-                    args->inboard[(i+1)+ (jrow + LDA)];
+                    args->inboard[(LDA - 1)+ (jr - LDA)] +
+                    args->inboard[(LDA - 1)+jr] +
+                    args->inboard[(LDA - 1)+ (jr + LDA)] +
+                    args->inboard[i+ (jr - LDA)] +
+                    args->inboard[i+(jr + LDA)] +
+                    args->inboard[(i+1)+ (jr - LDA)] +
+                    args->inboard[(i+1)+jr] +
+                    args->inboard[(i+1)+ (jr + LDA)];
 
-                args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
+                args->outboard[i+jr] = alivep (neighbor_count,  args->inboard[ i+ jr]);
         	}
             for (i = 1; i < (args->nrows-1) ; i++)
             {				
+            		int jrow = LDA * j;
                     const char neighbor_count =
                     args->inboard[(i-1)+ (jrow - LDA)] +
                     args->inboard[(i-1) + jrow] +
@@ -80,16 +81,16 @@ parallel_game_of_life (void * arg)
             }
         	{
                 const char neighbor_count =
-                    args->inboard[(i-1)+ (jrow - LDA)] +
-                    args->inboard[(i-1)+jrow] +
-                    args->inboard[(i-1)+ (jrow + LDA)] +
-                    args->inboard[i+ (jrow - LDA)] +
-                    args->inboard[i+(jrow + LDA)] +
-                    args->inboard[(jrow - LDA)] +
-                    args->inboard[jrow] +
-                    args->inboard[(jrow + LDA)];
+                    args->inboard[(i-1)+ (jr - LDA)] +
+                    args->inboard[(i-1)+jr] +
+                    args->inboard[(i-1)+ (jr + LDA)] +
+                    args->inboard[i+ (jr - LDA)] +
+                    args->inboard[i+(jr + LDA)] +
+                    args->inboard[(jr - LDA)] +
+                    args->inboard[jr] +
+                    args->inboard[(jr + LDA)];
 
-                args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
+                args->outboard[i+jr] = alivep (neighbor_count,  args->inboard[ i+ jr]);
         	}
 	    }
 		{
