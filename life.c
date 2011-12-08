@@ -26,53 +26,13 @@ parallel_game_of_life (void * arg)
 	{
 		{
 			j=colstart;
-			i=0;
-			{
-				int jrow = LDA * j;
-				const int inorth = (args->nrows - 1);
-                const int isouth = (i+1);
-                const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
-                const int jeast =  jrow + LDA;
-
-                const char neighbor_count =
-                    args->inboard[inorth+ jwest] +
-                    args->inboard[inorth+jrow] +
-                    args->inboard[inorth+ jeast] +
-                    args->inboard[i+ jwest] +
-                    args->inboard[i+jeast] +
-                    args->inboard[isouth+ jwest] +
-                    args->inboard[isouth+jrow] +
-                    args->inboard[isouth+ jeast];
-
-                args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
-			}
-			i=args->nrows-1;
-			{
-				int jrow = LDA * j;
-				const int inorth = (i-1) ;
-                const int isouth = 0;
-                const int jwest = jrow - LDA;
-                const int jeast =  (j== args->ncols - 1) ? 0 : jrow + LDA;
-
-                const char neighbor_count =
-                    args->inboard[inorth+ jwest] +
-                    args->inboard[inorth+jrow] +
-                    args->inboard[inorth+ jeast] +
-                    args->inboard[i+ jwest] +
-                    args->inboard[i+jeast] +
-                    args->inboard[isouth+ jwest] +
-                    args->inboard[isouth+jrow] +
-                    args->inboard[isouth+ jeast];
-
-                args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
-			}
-			for(i = 1; i < args->nrows-1 ; i++)
+			for(i = 0; i < args->nrows ; i++)
 			{
 				int jrow = LDA * j;
 				const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
-                const int jeast =  jrow + LDA;
+                const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
 
                 const char neighbor_count =
                     args->inboard[inorth+ jwest] +
