@@ -122,9 +122,9 @@ parallel_game_of_life (void * arg)
         	}
             for (i = 1; i < (args->nrows-1) ; i++)
             {
-            /*
+            
 				int jrow = LDA * j;
-				
+			/*	
 				const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
