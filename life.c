@@ -47,7 +47,7 @@ parallel_game_of_life (void * arg)
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
 		}
-		j=colend;
+		j=colend-1;
 		{
 			for(i = 0; i < args->nrows ; i++)
 			{
