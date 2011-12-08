@@ -49,9 +49,9 @@ parallel_game_of_life (void * arg)
 		}
         for (j=colstart+1; j < (colend-1); j++)
         {
-			int jr = LDA * j;
         	i=0;
         	{
+        	int jr = LDA * j;
                 const char neighbor_count =
                     args->inboard[(LDA - 1)+ (jr - LDA)] +
                     args->inboard[(LDA - 1)+jr] +
@@ -80,6 +80,7 @@ parallel_game_of_life (void * arg)
                args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+ jrow]);
             }
         	{
+        	int jr = LDA * j;
                 const char neighbor_count =
                     args->inboard[(i-1)+ (jr - LDA)] +
                     args->inboard[(i-1)+jr] +
