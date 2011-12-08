@@ -56,7 +56,7 @@ parallel_game_of_life (void * arg)
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
-                
+
                 const char neighbor_count =
                     args->inboard[inorth+ jwest] +
                     args->inboard[inorth+jrow] +
@@ -70,7 +70,7 @@ parallel_game_of_life (void * arg)
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
 		}
-        for (j = colstart+1 ; j < colend-1; j++)
+        for (j = colstart+LDA ; j < (colend-LDA); j++)
         {
         	i=0;
         	{
@@ -103,7 +103,7 @@ parallel_game_of_life (void * arg)
                 const int isouth = 0;
                 const int jwest = jrow - LDA;
                 const int jeast = jrow + LDA;*/
-                const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
+				const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
@@ -120,7 +120,7 @@ parallel_game_of_life (void * arg)
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
         	}
-            for (i = 0+1; i < args->nrows-1 ; i++)
+            for (i = 1; i < (args->nrows-1) ; i++)
             {
 				int jrow = LDA * j;
 /*				
@@ -128,12 +128,6 @@ parallel_game_of_life (void * arg)
                 const int isouth = (i == args->nrows - 1) ? 0 : (i+1);
                 const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
                 const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
-
-
-				const int inorth = (i-1) ;
-                const int isouth = (i+1);
-                const int jwest = jrow - LDA;
-                const int jeast = jrow + LDA;
 
                 const char neighbor_count =
                     args->inboard[inorth+ jwest] +
@@ -146,16 +140,21 @@ parallel_game_of_life (void * arg)
                     args->inboard[isouth+ jeast];
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
+                
+                				const int inorth = (i-1) ;
+                const int isouth = (i+1);
+                const int jwest = jrow - LDA;
+                const int jeast = jrow + LDA;
                 */
                     const char neighbor_count =
-                    args->inboard[i-1+ jrow - LDA] +
+                    args->inboard[(i-1)+ (jrow - LDA)] +
                     args->inboard[(i-1) + jrow] +
-                    args->inboard[ (i-1) + jrow + LDA] +
-                    args->inboard[ i + jrow - LDA] +
-                    args->inboard[i + jrow + LDA] +
-                    args->inboard[i+1+ jrow - LDA] +
+                    args->inboard[(i-1) + (jrow + LDA)] +
+                    args->inboard[i + (jrow - LDA)] +
+                    args->inboard[i + (jrow + LDA)] +
+                    args->inboard[(i+1)+ (jrow - LDA)] +
                     args->inboard[ (i+1)+ jrow] +
-                    args->inboard[ (i+1)+ jrow + LDA];
+                    args->inboard[ (i+1)+ (jrow + LDA)];
 
                args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+ jrow]);
                
