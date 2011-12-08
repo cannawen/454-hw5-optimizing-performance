@@ -35,38 +35,68 @@ parallel_game_of_life (void * arg)
 				// Create arrays for the neighbours of the next 16 squares
 				char north[16];
 				char south[16];
-				char east[16];
-				char west[16];
 				char north_east[16];
 				char north_west[16];
 				char south_east[16];
 				char south_west[16];
+	               
+				const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
+	            const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
+				
 				for (k = 0; k < 16; k++)
 				{
 					q = i + k;
-	                const int inorth = (q == 0) ? (args->nrows - 1) : (q-1) ;
 	                const int isouth = (q == args->nrows - 1) ? 0 : (q+1);
-	                const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
-	                const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
+	            	const int inorth = (q == 0) ? (args->nrows - 1) : (q-1) ;
 
-					north[k] = SMRT_BOARD(args->inboard, inorth, jrow);
-					south[k] = SMRT_BOARD(args->inboard, isouth, jrow);
-					east[k] = SMRT_BOARD(args->inboard, q, jeast);
-					west[k] = SMRT_BOARD(args->inboard, q, jwest);
-					north_east[k] = SMRT_BOARD(args->inboard, inorth, jeast);
-					north_west[k] = SMRT_BOARD(args->inboard, inorth, jwest);
-					south_east[k] = SMRT_BOARD(args->inboard, isouth, jeast);
-					south_west[k] = SMRT_BOARD(args->inboard, isouth, jwest);
+					if (i == 0)
+					{
+						north[k] = SMRT_BOARD(args->inboard, inorth, jrow);
+						north_east[k] = SMRT_BOARD(args->inboard, inorth, jeast);
+						north_west[k] = SMRT_BOARD(args->inboard, inorth, jwest);
+					}
+					if (i + 16 == args->ncols)
+					{
+						south[k] = SMRT_BOARD(args->inboard, isouth, jrow);
+						south_east[k] = SMRT_BOARD(args->inboard, isouth, jeast);
+						south_west[k] = SMRT_BOARD(args->inboard, isouth, jwest);
+					}
 				}
                 
-	           	__m128i north_sse = _mm_loadu_si128((__m128i *)(&north));
-	           	__m128i south_sse = _mm_loadu_si128((__m128i *)(&south));
-	           	__m128i east_sse = _mm_loadu_si128((__m128i *)(&east));
-	           	__m128i west_sse = _mm_loadu_si128((__m128i *)(&west));
-	           	__m128i north_east_sse = _mm_loadu_si128((__m128i *)(&north_east));
-	           	__m128i north_west_sse = _mm_loadu_si128((__m128i *)(&north_west));
-	           	__m128i south_east_sse = _mm_loadu_si128((__m128i *)(&south_east));
-	           	__m128i south_west_sse = _mm_loadu_si128((__m128i *)(&south_west));
+				__m128i north_sse;
+				__m128i south_sse;
+				__m128i north_east_sse;
+				__m128i north_west_sse;
+				__m128i south_east_sse;
+				__m128i south_west_sse;
+				
+				if (i > 0)
+	           	{
+					north_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i - 1, jrow))));
+					north_east_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i - 1, jeast))));
+					north_west_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i - 1, jwest))));
+				}
+				else
+				{
+					north_sse = _mm_loadu_si128((__m128i *)(&north));
+	           		north_east_sse = _mm_loadu_si128((__m128i *)(&north_east));
+	           		north_west_sse = _mm_loadu_si128((__m128i *)(&north_west));
+				}
+				if (i + 16 < args->ncols)
+				{
+					south_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i + 1, jrow))));
+					south_east_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i + 1, jeast))));
+					south_west_sse = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i + 1, jwest))));
+				}
+				else
+				{
+					south_sse = _mm_loadu_si128((__m128i *)(&south));
+	           		south_east_sse = _mm_loadu_si128((__m128i *)(&south_east));
+	           		south_west_sse = _mm_loadu_si128((__m128i *)(&south_west));
+	           	}
+
+				__m128i east_sse  = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i, jeast))));
+	           	__m128i west_sse  = _mm_loadu_si128((__m128i *)(&(SMRT_BOARD(args->inboard, i, jwest))));
 				__m128i neighbor_count;
 
 				neighbor_count = _mm_add_epi8(_mm_add_epi8(_mm_add_epi8(north_sse, south_sse), _mm_add_epi8(east_sse, west_sse)), _mm_add_epi8(_mm_add_epi8(north_east_sse, north_west_sse), _mm_add_epi8(south_east_sse, south_west_sse)));
