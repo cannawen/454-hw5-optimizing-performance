@@ -43,26 +43,28 @@ parallel_game_of_life (void * arg)
 				const int jeast = (j== args->ncols - 1) ? 0 : jrow + LDA;
 	            const int jwest = (j==0) ? (args->ncols - 1) * LDA : jrow - LDA;
 				
-				for (k = 0; k < 16; k++)
+				if (i == 0 || (i + 16) == args->ncols)
 				{
-					q = i + k;
-	                const int isouth = (q == args->nrows - 1) ? 0 : (q+1);
-	            	const int inorth = (q == 0) ? (args->nrows - 1) : (q-1) ;
-
-					if (i == 0)
+					for (k = 0; k < 16; k++)
 					{
-						north[k] = SMRT_BOARD(args->inboard, inorth, jrow);
-						north_east[k] = SMRT_BOARD(args->inboard, inorth, jeast);
-						north_west[k] = SMRT_BOARD(args->inboard, inorth, jwest);
+						q = i + k;
+		                const int isouth = (q == args->nrows - 1) ? 0 : (q+1);
+		            	const int inorth = (q == 0) ? (args->nrows - 1) : (q-1) ;
+	
+						if (i == 0)
+						{
+							north[k] = SMRT_BOARD(args->inboard, inorth, jrow);
+							north_east[k] = SMRT_BOARD(args->inboard, inorth, jeast);
+							north_west[k] = SMRT_BOARD(args->inboard, inorth, jwest);
+						}
+						if (i + 16 == args->ncols)
+						{
+							south[k] = SMRT_BOARD(args->inboard, isouth, jrow);
+							south_east[k] = SMRT_BOARD(args->inboard, isouth, jeast);
+							south_west[k] = SMRT_BOARD(args->inboard, isouth, jwest);
+						}
 					}
-					if (i + 16 == args->ncols)
-					{
-						south[k] = SMRT_BOARD(args->inboard, isouth, jrow);
-						south_east[k] = SMRT_BOARD(args->inboard, isouth, jeast);
-						south_west[k] = SMRT_BOARD(args->inboard, isouth, jwest);
-					}
-				}
-                
+   				}             
 				__m128i north_sse;
 				__m128i south_sse;
 				__m128i north_east_sse;
