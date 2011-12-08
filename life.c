@@ -122,6 +122,7 @@ parallel_game_of_life (void * arg)
         	}
             for (i = 1; i < (args->nrows-1) ; i++)
             {
+            /*
 				int jrow = LDA * j;
 				
 				const int inorth = (i == 0) ? (args->nrows - 1) : (i-1) ;
@@ -140,12 +141,12 @@ parallel_game_of_life (void * arg)
                     args->inboard[isouth+ jeast];
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
-                /*
-                				const int inorth = (i-1) ;
+               
+                const int inorth = (i-1) ;
                 const int isouth = (i+1);
                 const int jwest = jrow - LDA;
                 const int jeast = jrow + LDA;
-                
+               */ 
                     const char neighbor_count =
                     args->inboard[(i-1)+ (jrow - LDA)] +
                     args->inboard[(i-1) + jrow] +
@@ -156,7 +157,7 @@ parallel_game_of_life (void * arg)
                     args->inboard[ (i+1)+ jrow] +
                     args->inboard[ (i+1)+ (jrow + LDA)];
 
-               args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+ jrow]);*/
+               args->outboard[i+jrow] = alivep (neighbor_count, args->inboard[i+ jrow]);
                
             }
 	    }
