@@ -24,7 +24,7 @@ parallel_game_of_life (void * arg)
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
-		if(args->thread_id==0)
+		//if(args->thread_id==0)
 		{
 			j=colstart;
 			for(i = 0; i < args->nrows ; i++)
@@ -47,9 +47,9 @@ parallel_game_of_life (void * arg)
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
-			colstart++;
+			//colstart++;
 		}
-		if(args->thread_id==NUM_THREADS-1)
+		//if(args->thread_id==NUM_THREADS-1)
 		{
 			j=colend-1;
 			for(i = 0; i < args->nrows ; i++)
@@ -72,9 +72,9 @@ parallel_game_of_life (void * arg)
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
-			colend--;
+			//colend--;
 		}
-        for (j =colstart; j < (colend-2); j++)
+        for (j =colstart +1; j < (colend-1); j++)
         {
         	i=0;
         	{
