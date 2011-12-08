@@ -74,7 +74,7 @@ parallel_game_of_life (void * arg)
 			}
 			colend--;
 		}
-        for (j =colstart; j < (colend); j++)
+        for (j =colstart; j < (colend-2); j++)
         {
         	i=0;
         	{
