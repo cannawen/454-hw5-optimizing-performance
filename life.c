@@ -47,6 +47,7 @@ parallel_game_of_life (void * arg)
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
+			colstart++;
 		}
 		if(args->thread_id==NUM_THREADS-1)
 		{
@@ -73,7 +74,7 @@ parallel_game_of_life (void * arg)
 			}
 			colend--;
 		}
-        for (j = (colstart==0) ? colstart+1:colstart ; j < (colend-1); j++)
+        for (j =colstart ; j < (colend-1); j++)
         {
         	i=0;
         	{
