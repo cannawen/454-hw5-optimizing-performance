@@ -17,7 +17,7 @@ parallel_game_of_life (void * arg)
     thd *args = (thd *) arg;
 
     const int LDA = args->nrows;
-    int curgen;//, i, j;
+    int curgen, i, j;
     int chunk = args->ncols / NUM_THREADS;
     int colstart = chunk * args->thread_id;
     int colend = chunk * (args->thread_id + 1);
@@ -26,7 +26,6 @@ parallel_game_of_life (void * arg)
 	for (curgen = 0; curgen < m; curgen++)
 	{
 		{
-			int j,i;
 			j=colstart;
 			for(i = 0; i < args->nrows ; i++)
 			{
@@ -50,10 +49,8 @@ parallel_game_of_life (void * arg)
 			}
 		}
 		{
-		int j;
         for (j=colstart+1; j < (colend-1); j++)
         {
-	        int i;
         	{
         			i=0;
 		        	int jr = LDA * j;
@@ -102,7 +99,6 @@ parallel_game_of_life (void * arg)
 	    }
 	    }
 		{
-			int j,i;
 			j=colend-1;
 			for(i = 0; i < args->nrows ; i++)
 			{
