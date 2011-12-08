@@ -24,7 +24,7 @@ parallel_game_of_life (void * arg)
     
 	for (curgen = 0; curgen < args->gens_max; curgen++)
 	{
-		if(colstart==0)
+		if(args->thread_id==0)
 		{
 			j=colstart;
 			for(i = 0; i < args->nrows ; i++)
@@ -48,8 +48,9 @@ parallel_game_of_life (void * arg)
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
 		}
-		j=colend-1;
+		if(args->thread_id==NUM_THREADS-1)
 		{
+			j=colend-1;
 			for(i = 0; i < args->nrows ; i++)
 			{
 				int jrow = LDA * j;
@@ -70,8 +71,9 @@ parallel_game_of_life (void * arg)
 
                 args->outboard[i+jrow] = alivep (neighbor_count,  args->inboard[ i+ jrow]);
 			}
+			colend--;
 		}
-        for (j = (colstart==0) ? colstart+1:colstart ; j < (colend-1); j++)
+        for (j = (colstart==0) ? colstart+1:colstart ; j < (colend); j++)
         {
         	i=0;
         	{
